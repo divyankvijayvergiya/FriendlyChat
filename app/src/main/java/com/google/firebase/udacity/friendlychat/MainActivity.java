@@ -174,11 +174,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mFireBaseAuth.addAuthStateListener(mAuthStateListener);
-    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -186,9 +182,10 @@ public class MainActivity extends AppCompatActivity {
             mFireBaseAuth.removeAuthStateListener(mAuthStateListener);
 
         }
+        mMessageAdapter.clear();
         detachDatabaseReadListener();
 
-        mMessageAdapter.clear();
+
     }
 
 
@@ -235,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    
 
                 }
 
