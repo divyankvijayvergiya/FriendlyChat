@@ -35,6 +35,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -191,13 +192,18 @@ public class MainActivity extends AppCompatActivity {
             }else if (requestCode== RC_PHOTO_PICKER && resultCode== RESULT_OK){
                 Uri selectedImageUri = data.getData();
                 StorageReference photoRef=mChatPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
-                photoRef.putFile(selectedImageUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+              UploadTask uploadTask= photoRef.putFile(selectedImageUri);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        @SuppressWarnings("VisibleForTests")Uri downloadUrl=taskSnapshot.getDownloadUrl();
+                        @SuppressWarnings("VisibleForTests")  Uri downloadUrl=taskSnapshot.getDownloadUrl();
                         FriendlyMessage friendlyMessage=new FriendlyMessage(null,mUsername,downloadUrl.toString());
                         mDatabaseReference.push().setValue(friendlyMessage);
-
 
 
                     }
