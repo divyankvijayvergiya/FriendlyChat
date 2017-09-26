@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         mFireBaseAuth=FirebaseAuth.getInstance();
         mFirebaseStorage=FirebaseStorage.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference().child("messages");
-        mChatPhotoStorageReference=mFirebaseStorage.getReference().child("chat_photos");
+        mChatPhotoStorageReference=mFirebaseStorage.getReference().child("chat_photos/");
 
 
 
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
             }else if (requestCode== RC_PHOTO_PICKER && resultCode== RESULT_OK){
                 Uri selectedImageUri = data.getData();
-                StorageReference photoRef=mChatPhotoStorageReference.child(selectedImageUri.getLastPathSegment());
+                StorageReference photoRef=mChatPhotoStorageReference.child("chat_photos/"+selectedImageUri.getLastPathSegment());
               UploadTask uploadTask= photoRef.putFile(selectedImageUri);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
